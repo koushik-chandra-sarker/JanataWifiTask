@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    \
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    >
+    <title>JanataWifi</title>
+</head>
+<body>
+<div class="container mt-1">
+    <div class="row gx-5">
+
+        <div class="col-sm-12 ">
+            <section id="instances" class="instances_table">
+                <h4 class="alert alert-info text-center mb-3">Stock Market</h4>
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-end">
+                        <button  data-bs-toggle="modal"
+                                 data-bs-target="#addInstanceModel"
+                                 class="btn btn-primary">Add</button>
+                    </div>
+                </div>
+                <table class="table text-center ">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Trade Code</th>
+                        <th scope="col">High</th>
+                        <th scope="col">Low</th>
+                        <th scope="col">Open</th>
+                        <th scope="col">Close</th>
+                        <th scope="col">Volume</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="instancesTbody">
+                    {% for instance in instances %}
+                        <tr>
+                            <td>{{ instance.id }}</td>
+                            <td>{{ instance.date }}</td>
+                            <td>{{ instance.trade_code }}</td>
+                            <td>{{ instance.high }}</td>
+                            <td>{{ instance.low }}</td>
+                            <td>{{ instance.open }}</td>
+                            <td>{{ instance.close }}</td>
+                            <td>{{ instance.volume }}</td>
+                            <td>
+                                <button
+                                        data-inId="{{ instance.id }}"
+                                        data-inDate="{{ instance.date }}"
+                                        data-inTradeCode="{{ instance.trade_code }}"
+                                        data-inHigh="{{ instance.high }}"
+                                        data-inLow="{{ instance.low }}"
+                                        data-inOpen="{{ instance.open }}"
+                                        data-inClose="{{ instance.close }}"
+                                        data-inVolume="{{ instance.volume }}"
+                                        class="me-1 btn btn-warning btn-sm btn_InUpdate"
+                                        data-bs-toggle="modal" data-bs-target="#updateInstanceModel"
+                                >Update
+                                </button>
+
+                                <button
+                                         data-dInId="{{ instance.id }}"
+                                        class="btn btn-danger btn-sm btn_InDelete"
+                                >Delete
+                                </button>
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+
+            </section>
+            <section class="modal fade " id="updateInstanceModel" tabindex="-1" aria-labelledby="updateInstanceModelLabel"
+                     aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Update</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            {% csrf_token %}
+                            <input type="hidden" id="instanceId">
+                            <div class="mb-3">
+                                <label for="instanceDate" class="form-label">Date</label>
+                                <input type="date" class="form-control" id="instanceDate"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="instanceTradeCode" class="form-label">Trade Code</label>
+                                <input type="text" class="form-control" id="instanceTradeCode"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="instanceHigh" class="form-label">High</label>
+                                <input type="number" class="form-control" id="instanceHigh"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="instanceLow" class="form-label">Low</label>
+                                <input type="number" class="form-control" id="instanceLow"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="instanceOpen" class="form-label">Open</label>
+                                <input type="number" class="form-control" id="instanceOpen"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="instanceClose" class="form-label">Close</label>
+                                <input type="number" class="form-control" id="instanceClose"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="instanceVolume" class="form-label">Volume</label>
+                                <input type="text" class="form-control" id="instanceVolume"/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="updateInstanceBtn" type="button" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="modal fade " id="addInstanceModel" tabindex="-1" aria-labelledby="saveInstanceModelLabel"
+                     aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Add</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="addInstanceDate" class="form-label">Date</label>
+                                <input type="date" class="form-control" id="addInstanceDate"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="addInstanceTradeCode" class="form-label">Trade Code</label>
+                                <input type="text" class="form-control" id="addInstanceTradeCode"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="addInstanceHigh" class="form-label">High</label>
+                                <input type="number" class="form-control" id="addInstanceHigh"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="addInstanceLow" class="form-label">Low</label>
+                                <input type="number" class="form-control" id="addInstanceLow"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="addInstanceOpen" class="form-label">Open</label>
+                                <input type="number" class="form-control" id="addInstanceOpen"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="addInstanceClose" class="form-label">Close</label>
+                                <input type="number" class="form-control" id="addInstanceClose"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="addInstanceVolume" class="form-label">Volume</label>
+                                <input type="text" class="form-control" id="addInstanceVolume"/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="addInstanceBtn" type="button" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+
+
+<script>
+    $(() => {
+        let instanceId = $("#instanceId")
+        let instanceDate = $("#instanceDate")
+        let instanceTradeCode = $("#instanceTradeCode")
+        let instanceHigh = $("#instanceHigh")
+        let instanceLow = $("#instanceLow")
+        let instanceOpen = $("#instanceOpen")
+        let instanceClose = $("#instanceClose")
+        let instanceVolume = $("#instanceVolume")
+
+        {#Set instance to Modal, start#}
+        $('.btn_InUpdate').click(function () {
+            instanceId.val($(this).attr("data-inId"))
+            const date = new Date($(this).attr("data-inDate")).toLocaleDateString().split('/')
+
+            instanceDate.val(`${date[2]}-${date[1].toString().padStart(2, 0)}-${date[0].toString().padStart(2, 0)}`)
+            instanceTradeCode.val($(this).attr("data-inTradeCode"))
+            instanceHigh.val($(this).attr("data-inHigh"))
+            instanceLow.val($(this).attr("data-inLow"))
+            instanceOpen.val($(this).attr("data-inOpen"))
+            instanceClose.val($(this).attr("data-inClose"))
+            instanceVolume.val($(this).attr("data-inVolume"))
+
+
+        })
+        {#Set ReviewInstance to Modal, end#}
+
+        {#update Instance from Modal, start#}
+        $('#updateInstanceBtn').click(() => {
+            const data = {
+                id: instanceId.val(),
+                date: instanceDate.val(),
+                trade_code: instanceTradeCode.val(),
+                high: instanceHigh.val(),
+                low: instanceLow.val(),
+                open: instanceOpen.val(),
+                close: instanceClose.val(),
+                volume: instanceVolume.val(),
+                csrfmiddlewaretoken: $("input[name =csrfmiddlewaretoken]").val()
+            }
+            saveInstance(data)
+
+
+        })
+        $('#addInstanceBtn').click(() => {
+            const data = {
+                date: $("#addInstanceDate").val(),
+                trade_code: $("#addInstanceTradeCode").val(),
+                high: $("#addInstanceHigh").val(),
+                low: $("#addInstanceLow").val(),
+                open: $("#addInstanceOpen").val(),
+                close: $("#addInstanceClose").val(),
+                volume: $("#addInstanceVolume").val(),
+                csrfmiddlewaretoken: $("input[name =csrfmiddlewaretoken]").val()
+            }
+            saveInstance(data)
+
+
+        })
+        {#Save/update Instance from Modal#}
+        function saveInstance(data) {
+            $.ajax({
+                url: "saveInstance/",
+                type: "POST",
+                data: data,
+                dataType: 'json',
+                success: (data) => {
+                    console.log(data)
+                    if (data.status) {
+                        $('body').load(location.href);
+                        alert('Save Successful');
+                    } else {
+                        alert('Something went wrong!');
+                    }
+                },
+                error: () => {
+                    alert('Something went wrong!');
+                }
+            })
+        }
+        function deleteInstance(id){
+            $.ajax({
+                url: `deleteInstance/${id}/`,
+                type: "DELETE",
+                dataType: 'json',
+                success: (data) => {
+                    if (data.status) {
+                        $('body').load(location.href);
+                        alert('Delete Successful');
+                    } else {
+                        alert('Something went wrong!');
+                    }
+                },
+                error: () => {
+                    alert('Something went wrong!');
+                }
+            })
+        }
+
+        $('.btn_InDelete').click(function () {
+            const id =$(this).attr("data-dInId")
+            const data = {
+                csrfmiddlewaretoken: $("input[name =csrfmiddlewaretoken]").val()
+            }
+            deleteInstance(id)
+
+
+        })
+    })
+
+</script>
+</body>
+</html>
